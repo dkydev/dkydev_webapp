@@ -4,7 +4,7 @@ files:
   - source: /
     destination: /home/dkydev_com/webapp/
 permissions:
-  - object: /home/dkydev_com/webapp/
+  - object: /home/dkydev_com/webapp
     owner: dkydev_com
     group: dkydev_com
     mode: 755
