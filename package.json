@@ -14,8 +14,7 @@
     "ejs": "^2.4.2"
   },
   "scripts": {
-    "build" : "tsc && npm run start",
-    "start" : "node app.js"
+    "build" : "tsc"
   },
   "author": "Nick Robson",
   "license": "ISC"
