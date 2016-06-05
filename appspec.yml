@@ -1,0 +1,12 @@
+os: linux
+files:
+  - source: source
+    destination: /home/dkydev_com/webapp/
+permissions:
+  - object: /home/dkydev_com/webapp/
+    pattern: "*"
+    owner: dkydev_com
+    group: dkydev_com
+    mode: 755
+    type:
+      - file
