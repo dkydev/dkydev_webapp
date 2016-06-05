@@ -5,7 +5,6 @@ files:
     destination: /home/dkydev_com/webapp/
 permissions:
   - object: /home/dkydev_com/webapp/
-    pattern: "*"
     owner: dkydev_com
     group: dkydev_com
     mode: 755
@@ -14,10 +13,6 @@ permissions:
 hooks:
   BeforeInstall:
     - location: scripts/clean
-      timeout: 300
-      runas: root
-  AfterInstall:
-    - location: scripts/set_permissions
       timeout: 300
       runas: root
   ApplicationStart:

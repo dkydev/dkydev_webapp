@@ -1,2 +1,0 @@
-#!/bin/bash
-chown -R dkydev_com:dkydev_com /home/dkydev_com/webapp
