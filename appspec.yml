@@ -1,6 +1,6 @@
 os: linux
 files:
-  - source: /*
+  - source: /
     destination: /home/dkydev_com/webapp/
 permissions:
   - object: /home/dkydev_com/webapp/
@@ -22,3 +22,4 @@ hooks:
     - location: scripts/stop_server
       timeout: 300
       runas: root
+
