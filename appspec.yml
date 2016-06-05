@@ -1,6 +1,6 @@
 os: linux
 files:
-  - source: source
+  - source: /*
     destination: /home/dkydev_com/webapp/
 permissions:
   - object: /home/dkydev_com/webapp/
@@ -12,11 +12,13 @@ permissions:
       - file
 hooks:
   BeforeInstall:
-    - location: scripts/clean.sh
+    - location: scripts/clean
+      runas: root
   ApplicationStart:
-    - location: scripts/start_server.sh
+    - location: scripts/start_server
       timeout: 3600
+      runas: root
   ApplicationStop:
-    - location: scripts/stop_server.sh
+    - location: scripts/stop_server
       timeout: 300
       runas: root

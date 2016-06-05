@@ -1,1 +1,2 @@
+#!/bin/bash
 rm -rf /home/dkydev_com/webapp/*
