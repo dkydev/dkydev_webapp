@@ -1,8 +1,13 @@
 {
     "compilerOptions": {
-        "target": "es5",
         "module": "commonjs",
-        "sourceMap": true,
-        "watch": true
-    }
+        "sourceMap": true
+    },
+    "files": [
+        "./typings/index.d.ts",
+        "./routes/index.ts",
+        "./db.ts",
+        "./app.ts",
+        "./config/index.ts"
+    ]
 }

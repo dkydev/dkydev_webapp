@@ -1,21 +1,21 @@
 {
-  "name": "webapp",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "directories": {
-    "doc": "doc"
+  "name": "dkydev",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "watch": "onchange \"**/*.ts\" -i -- npm run build"
   },
   "dependencies": {
-    "express": "^4.13.4"
+    "body-parser": "^1.15.1",
+    "ejs": "^2.4.2",
+    "express": "^4.13.3",
+    "method-override": "^2.3.6",
+    "pg": "^5.1.0"
   },
   "devDependencies": {
-    "body-parser": "^1.15.1",
-    "ejs": "^2.4.2"
-  },
-  "scripts": {
-    "build" : "tsc"
-  },
-  "author": "Nick Robson",
-  "license": "ISC"
+    "errorhandler": "^1.4.3",
+    "onchange": "^2.5.0",
+    "typescript": "^1.8.10"
+  }
 }

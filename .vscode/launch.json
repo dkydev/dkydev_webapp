@@ -9,16 +9,16 @@
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": null,
+            //"preLaunchTask": "build",
             "runtimeExecutable": null,
             "runtimeArgs": [
                 "--nolazy"
             ],
             "env": {
-                "NODE_ENV": "development"
+                "NODE_ENV": "production"
             },
             "externalConsole": false,
-            "sourceMaps": true,
+            "sourceMaps": false,
             "outDir": null
         },
         {
@@ -27,8 +27,8 @@
             "request": "attach",
             "port": 5858,
             "address": "localhost",
-            "restart": true,
-            "sourceMaps": true,
+            "restart": false,
+            "sourceMaps": false,
             "outDir": null,
             "localRoot": "${workspaceRoot}",
             "remoteRoot": null
