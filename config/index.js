@@ -3,7 +3,7 @@ var config = (function () {
     function config() {
     }
     config.HOST = "localhost";
-    config.PORT = 8080;
+    config.PORT = 80;
     config.AWS_S3_KEY = "AAAAAAAA";
     config.AWS_S3_SECRET = "AAAAAAAA";
     config.DATABASE_HOST = "localhost";
