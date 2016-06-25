@@ -3,11 +3,7 @@
         "module": "commonjs",
         "sourceMap": true
     },
-    "files": [
-        "./typings/index.d.ts",
-        "./routes/index.ts",
-        "./db.ts",
-        "./app.ts",
-        "./config/index.ts"
+    "exclude": [
+        "node_modules"
     ]
 }

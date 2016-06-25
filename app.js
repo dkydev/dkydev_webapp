@@ -15,13 +15,9 @@ app.use(methodOverride());
 app.use(express.static(__dirname + "/public"));
 // Routes.
 app.get("/", routes.index);
+app.get("/edit", routes.edit);
 // Catch all.
-app.get('*', function (req, res, next) {
-    res.status(404).render("layout.html", {
-        title: "404 - dkydev",
-        template: "404.html"
-    });
-});
+app.get('*', routes.error404);
 // Error handling.
 if (process.env.NODE_ENV !== "development") {
     app.use(function (err, req, res, next) {
