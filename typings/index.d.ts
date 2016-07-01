@@ -7,7 +7,6 @@
 /// <reference path="globals/express/index.d.ts" />
 /// <reference path="globals/method-override/index.d.ts" />
 /// <reference path="globals/mime/index.d.ts" />
-/// <reference path="globals/mu2/index.d.ts" />
 /// <reference path="globals/mustache/index.d.ts" />
 /// <reference path="globals/node/index.d.ts" />
 /// <reference path="globals/pg/index.d.ts" />
