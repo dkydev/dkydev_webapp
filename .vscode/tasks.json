@@ -24,7 +24,6 @@
                 "build"
             ],
             "isBuildCommand": true,
-            "isWatching": true,
             "showOutput": "always"
         }
     ]
