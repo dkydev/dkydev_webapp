@@ -8,6 +8,7 @@ import * as consolidate from "consolidate";
 import * as mustache from "mustache";
 import * as routes from "./routes";
 import config from "./config";
+import * as db from "./db";
 
 var app = express();
 //app.engine("html", consolidate.mustache);
@@ -21,6 +22,7 @@ app.use(express.static(__dirname + "/public"));
 // Routes.
 app.get("/", routes.index);
 app.get("/edit", routes.edit);
+app.get("/list", routes.list);
 // Catch all.
 app.get('*', routes.error404);
 
@@ -67,7 +69,6 @@ function getTemplate(template: string): Promise<string> {
         })
     });
 }
-
 
 app.listen(config.PORT, () => {
     console.log("Listening on port %d in %s mode.", config.PORT, process.env.NODE_ENV);

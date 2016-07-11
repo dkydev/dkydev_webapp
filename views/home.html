@@ -1,27 +1,7 @@
-<!--<div class="container">
-  <div class="card">
-    <small>June 24, 2016</small>
-    <h2>Setting up VSCode Development Environment</h2>
-    <p>Typescript + VSCode</p>
-    <p>NPM > Gulp/Grunt</p>
-    <p>Development vs Production</p>
-    <p>Rapid Development Tools</p>
-    <p>Production Server</p>
-    <p>Deployment</p>
-    <p>Testing...?</p>
-    <p>Nick</p>
-  </div>
-</div>-->
-
-<div class="container">
-  <div class="card">
-    <small>June 22, 2016</small>
-    <h2>Our story begins...</h2>
-    <p>I have finally got around to building a personal website. Mostly to satisfy the naming conventions in all my Java projects. <strong>So long com.example.app!</strong></p>
-    <p>The website was stitched together using <a href="https://nodejs.org">Node.js</a>, <a href="http://expressjs.com/">Express</a> and all that fun stuff. 
-    Check out the source code on my GitHub <a href="https://github.com/nicholas-robson/dkydev_webapp">here</a>.</p>
-    <p>The next TODO is dynamic posts and an editor. But for now we're sticking with static views. I may also go into detail regarding the IDE setup and builds/deploys.
-    I had to do quite a bit of research to get this website up and running.</p>
-    <p>Nick</p>
-  </div>
+{{#posts}}
+<div class="card">
+  <small>{{post_date}}</small>
+  <h2>{{post_title}}</h2>
+  {{&post_body}}
 </div>
+{{/posts}}

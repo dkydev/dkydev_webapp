@@ -18,6 +18,7 @@ app.use(express.static(__dirname + "/public"));
 // Routes.
 app.get("/", routes.index);
 app.get("/edit", routes.edit);
+app.get("/list", routes.list);
 // Catch all.
 app.get('*', routes.error404);
 // Error handling.
