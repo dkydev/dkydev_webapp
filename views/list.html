@@ -1,0 +1,20 @@
+<div class="card">
+  <table class="u-full-width">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#posts}}
+        <tr>
+          <td>{{post_title}}</td>
+          <td>{{post_date}}</td>
+          <td>{{post_status}}</td>
+        </tr>
+      {{/posts}}    
+    </tbody>
+  </table>
+</div>
