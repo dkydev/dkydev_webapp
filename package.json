@@ -7,15 +7,12 @@
     "watch": "onchange \"**/*.ts\" -i -- npm run build"
   },
   "dependencies": {
-    "body-parser": "^1.15.1",
-    "consolidate": "^0.14.1",
-    "ejs": "^2.4.2",
-    "express": "^4.13.3",
-    "massive": "^2.3.0",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
     "method-override": "^2.3.6",
-    "moment": "^2.13.0",
+    "moment": "^2.14.1",
     "mustache": "^2.2.1",
-    "pg": "^6.0.1"
+    "pg": "^6.0.3"
   },
   "devDependencies": {
     "errorhandler": "^1.4.3",

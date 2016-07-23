@@ -4,27 +4,28 @@ import {Request, Response} from "express";
 import * as bodyParser from "body-parser";
 import * as errorHandler from "errorhandler";
 import * as methodOverride from "method-override";
-import * as consolidate from "consolidate";
 import * as mustache from "mustache";
 import * as routes from "./routes";
 import config from "./config";
 import * as db from "./db";
 
 var app = express();
-//app.engine("html", consolidate.mustache);
-//app.set("view engine", "html");
-//app.set("views", __dirname + "/views");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(__dirname + "/public"));
 
 // Routes.
-app.get("/", routes.index);
-app.get("/edit", routes.edit);
-app.get("/list", routes.list);
+app.get("/", (req: Request, res: Response, next: (error: any) => any) => {
+    routes.index(req, res).catch(next);
+});
+app.get("/post/:action?/:id?", (req: Request, res: Response, next: (error: any) => any) => {
+    routes.post(req, res).catch(next);
+});
 // Catch all.
-app.get('*', routes.error404);
+app.get('*', (req: Request, res: Response, next: (error: any) => any) => {
+    routes.error404(req, res).catch(next);
+});
 
 // Error handling.
 if (process.env.NODE_ENV !== "development") {

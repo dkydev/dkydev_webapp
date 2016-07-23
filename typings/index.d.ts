@@ -17,7 +17,7 @@ declare module "pg" {
         connect(): Promise<Client>
     }
     export class Client {
-        query<T>(string): Promise<ResultSet<T>>
+        query<T>(string, Array?): Promise<ResultSet<T>>
         release(): void
     }
     export interface ResultSet<T> {

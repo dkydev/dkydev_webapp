@@ -3,11 +3,10 @@ var app = require("../app");
 var db = require("../db");
 var moment = require("moment");
 function index(req, res) {
-    db.getPosts().then(function (resultSet) {
-        console.log(resultSet);
+    return db.getPosts().then(function (posts) {
         app.renderLayout("home.html", {
             title: "dkydev.com home",
-            posts: resultSet.rows.map(function (post) {
+            posts: posts.map(function (post) {
                 post.post_date = moment(post.post_date * 1000).format("MMM D, YYYY");
                 return post;
             })
@@ -15,46 +14,52 @@ function index(req, res) {
             res.status(200).send(html);
         });
     });
-    /*
-        app.renderLayout("home.html", { title: "dkydev.com home" }).then((html: string) => {
-            res.status(200).send(html);
-        });
-        */
 }
 exports.index = index;
+function post(req, res) {
+    switch (req.params.action) {
+        case "edit":
+            return edit(req, res);
+        default:
+            return list(req, res);
+    }
+}
+exports.post = post;
 function edit(req, res) {
-    app.renderLayout("edit.html", {
-        title: "dkydev.com edit",
-        date: moment().format("MMM D, YYYY"),
-        post: {
-            post_id: 1,
-            post_date: moment().format("MMM D, YYYY"),
-            post_labels: null,
-            post_title: null,
-            post_body: null
+    if (!req.params.id) {
+        throw new Error("Post ID not specified.");
+    }
+    return db.getPost(req.params.id).then(function (post) {
+        if (typeof post === "undefined") {
+            throw new Error("Post not found.");
         }
+        //date: moment().format("MMM D, YYYY"),
+        console.log(post);
+        post.post_date = moment(post.post_date * 1000).format("MMM D, YYYY");
+        return app.renderLayout("edit.html", {
+            title: "dkydev.com edit",
+            post: post,
+            enabled: post.post_status == "enabled"
+        });
     }).then(function (html) {
         res.status(200).send(html);
     });
 }
-exports.edit = edit;
 function list(req, res) {
-    db.getPosts().then(function (resultSet) {
-        console.log(resultSet);
-        app.renderLayout("list.html", {
+    return db.getPosts().then(function (posts) {
+        return app.renderLayout("list.html", {
             title: "dkydev.com list",
-            posts: resultSet.rows.map(function (post) {
+            posts: posts.map(function (post) {
                 post.post_date = moment(post.post_date * 1000).format("MMM D, YYYY");
                 return post;
             })
-        }).then(function (html) {
-            res.status(200).send(html);
         });
+    }).then(function (html) {
+        res.status(200).send(html);
     });
 }
-exports.list = list;
 function error404(req, res) {
-    app.renderLayout("404.html", { title: "404 - dkydev" }).then(function (html) {
+    return app.renderLayout("404.html", { title: "404 - dkydev" }).then(function (html) {
         res.status(200).send(html);
     });
 }

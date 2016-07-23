@@ -8,19 +8,21 @@ var mustache = require("mustache");
 var routes = require("./routes");
 var config_1 = require("./config");
 var app = express();
-//app.engine("html", consolidate.mustache);
-//app.set("view engine", "html");
-//app.set("views", __dirname + "/views");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(__dirname + "/public"));
 // Routes.
-app.get("/", routes.index);
-app.get("/edit", routes.edit);
-app.get("/list", routes.list);
+app.get("/", function (req, res, next) {
+    routes.index(req, res).catch(next);
+});
+app.get("/post/:action?/:id?", function (req, res, next) {
+    routes.post(req, res).catch(next);
+});
 // Catch all.
-app.get('*', routes.error404);
+app.get('*', function (req, res, next) {
+    routes.error404(req, res).catch(next);
+});
 // Error handling.
 if (process.env.NODE_ENV !== "development") {
     app.use(function (err, req, res, next) {
