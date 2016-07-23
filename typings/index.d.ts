@@ -13,11 +13,12 @@
 declare module "pg" {
     export class Pool {
         constructor(any);
-        query(string): Promise<any>
+        query(sql: string): Promise<any>
         connect(): Promise<Client>
+        on(event: string, callback: (client?: Client) => void): void;
     }
     export class Client {
-        query<T>(string, Array?): Promise<ResultSet<T>>
+        query<T>(sql: string, params?: any[]): Promise<ResultSet<T>>
         release(): void
     }
     export interface ResultSet<T> {

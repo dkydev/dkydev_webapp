@@ -1,4 +1,4 @@
 deploy.sh
-config/index_production.ts
-config/index_production.js
-config/index_production.js.map
+var/config/index_production.ts
+var/config/index_production.js
+var/config/index_production.js.map
