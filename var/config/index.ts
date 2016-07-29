@@ -7,6 +7,4 @@ export default class config {
   public static DATABASE_USERNAME:string = "postgres";
   public static DATABASE_PASSWORD:string = "asdfasdf";
   public static LOG_LEVEL:string = "debug";
-  public static AWS_S3_KEY:string = "AAAAAAAA";
-  public static AWS_S3_SECRET:string = "AAAAAAAA";
 }

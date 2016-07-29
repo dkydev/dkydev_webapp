@@ -1,20 +1,23 @@
 <div class="card">
+  <a href="/post/edit" class="button button-primary">+ Add</a>
   <table class="u-full-width">
     <thead>
       <tr>
-        <th>Title</th>
         <th>Date</th>
+        <th>Title</th>
         <th>Status</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       {{#posts}}
-        <tr>
-          <td>{{post_title}}</td>
-          <td>{{post_date}}</td>
-          <td>{{post_status}}</td>
-        </tr>
-      {{/posts}}    
+      <tr>
+        <td>{{post_date}}</td>
+        <td><a href="/post/edit/{{post_id}}">{{post_title}}</a></td>
+        <td>{{post_status}}</td>
+        <td><a href="/post/remove/{{post_id}}">Delete</a></td>
+      </tr>
+      {{/posts}}
     </tbody>
   </table>
 </div>
