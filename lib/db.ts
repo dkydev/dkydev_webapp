@@ -9,12 +9,23 @@ var pool: Pool = new Pool({
     password: config.DATABASE_PASSWORD
 });
 
+pool.on("error", (error, client) => {
+    return error;
+});
+
 export function getClient(): Promise<Client> {
-    return pool.connect().then((client:Client) => {
-        return new Promise<Client>((resolve:(client:Client) => void, reject) => {
-           resolve(client);
-           client.release(); 
+    var client: Client;
+    return pool.connect().then((newClient: Client) => {
+        client = newClient;
+        return new Promise<Client>((resolve: (client: Client) => void, reject) => {
+            client.on("error", reject);
+            resolve(client);
+            client.release();
         });
+    }).catch((error: any): any => {
+        if (client)
+            client.release();
+        throw error;
     });
 }
 
