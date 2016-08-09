@@ -1,5 +1,8 @@
 import config from "../var/config";
+import * as pg from "pg";
 import {Pool, Client, ResultSet} from "pg";
+
+// `postgresql://${config.DATABASE_USERNAME}:${config.DATABASE_PASSWORD}@#${config.DATABASE_HOST}/${config.DATABASE_NAME}:${config.DATABASE_PORT}`;
 
 var pool: Pool = new Pool({
     host: config.DATABASE_HOST,
@@ -18,7 +21,6 @@ export function getClient(): Promise<Client> {
     return pool.connect().then((newClient: Client) => {
         client = newClient;
         return new Promise<Client>((resolve: (client: Client) => void, reject) => {
-            client.on("error", reject);
             resolve(client);
             client.release();
         });
@@ -29,4 +31,4 @@ export function getClient(): Promise<Client> {
     });
 }
 
-export {Client, ResultSet};
+export {pg, pool, Client, ResultSet};

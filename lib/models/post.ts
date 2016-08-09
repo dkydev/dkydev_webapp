@@ -72,7 +72,6 @@ export function savePost(post: Post): Promise<any> {
             client = newClient;
             return client.query<any>(`INSERT INTO post(post_title, post_date, post_body, post_status) VALUES ($1, $2, $3, $4) RETURNING post_id`, [post.post_title, post_date, post.post_body, post.post_status]);
         }).then((resultSet: ResultSet<any>) => {
-            console.log(resultSet);
             return Promise.all(post.post_labels.map((post_label: string) => {
                 return client.query<any>(`INSERT INTO post_label(post_id, post_label) VALUES ($1, $2)`, [resultSet.rows[0].post_id, post_label]);
             }));

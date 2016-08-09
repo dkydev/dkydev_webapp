@@ -1,10 +1,21 @@
 import * as fs from "fs";
 import * as mustache from "mustache";
+import {Request, Response, RequestHandler} from "express";
+import * as DKYSession from "./session";
+
+export default function sendHTML(req: Request, res: Response, data: any): Promise<any> {
+    data.status = data.status || 200;
+    data.title = data.title || "dkydev";
+    data.message = DKYSession.getMessage(req.session);
+    return renderLayout(data.template, data).then((html: string) => {
+        res.status(data.status).send(html);
+    });
+}
 
 export function renderLayout(template: string, data: any): Promise<string> {
     var bodyString: string;
     var layoutString: string;
-    return getTemplate(template).then((templateString) => {
+    return getTemplate(template).then((templateString: string) => {
         bodyString = templateString;
         return getTemplate("layout.html");
     }).then((templateString: string) => {

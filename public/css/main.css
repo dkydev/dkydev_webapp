@@ -31,13 +31,37 @@ h3 {font-size: 2em;}
 
 h4 {font-size: 1.5em;}
 
+
 small, .font-small {
     font-size: 0.7em;
 }
 
+.alert-danger {
+    background: #f14d54;
+}
+
+.alert-success {
+    background: #72de23;
+}
+
+.alert-warning {
+    background: #e49500;
+}
+
+.alert-info {
+    background: #00c3e4;
+}
+
+.alert {
+    padding: 12px;
+    margin: 5px 40px 0px;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
 .title {
     font-size: 3.2em;
-    color: white;
+    color: #ffffff;
     text-decoration: none;
     letter-spacing: 6px;
     line-height: 1.2em;
@@ -50,7 +74,7 @@ small, .font-small {
     padding:0px;
     background-color: white;
     margin: 10px 0px 15px 0px;
-    margin: 0px 30px 10px;
+    margin: 0px 25px 10px;
     border-bottom: 2px solid #e1e1e1;
 }
 
@@ -60,16 +84,16 @@ small, .font-small {
 }
 
 .post-date {
-    color: #ffffff;
-    background: #334f5d;
-    padding: 2px 8px;
-    display: inline-block;
-    border-radius: 5px;
-    font-size: 0.7em;
+    color: #333333;
+    /* background: #0099b3; */
+    /* padding: 6px 8px; */
+    /* display: inline-block; */
+    /* border-radius: 5px; */
+    font-size: 1.0em;
 }
 
 .right-col > .row {
-    margin:15px 0px;
+    margin: 20px 0px;
 }
 
 .left-col > div {
@@ -79,7 +103,7 @@ small, .font-small {
 }
 
 .left-col {
-    background: #263238;
+    background: #005361;
     height: auto;
     display: block;
     color: white;
@@ -98,6 +122,10 @@ small, .font-small {
         margin-left: 350px;
         overflow: auto;
         max-height: 100%;
+    }
+
+    .right-col > .row {
+        margin: 10px 0px;
     }
     .left-col {
         float:left;

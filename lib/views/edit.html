@@ -1,5 +1,14 @@
 <form action="/post/save" method="POST">
   <div class="card">
+
+    <div>
+      <div class="u-pull-right">
+        <a class="button-link" href="/post">Cancel</a>
+        <button class="button-primary" type="submit">Submit</button>
+      </div>
+      <div class="u-cf"></div>
+    </div>
+
     {{#post.post_id}} <input type="hidden" name="post_id" value="{{post.post_id}}" /> {{/post.post_id}}
     <label for="post_enabled">Status</label>
     <select class="u-full-width" id="post_status" name="post_status">
@@ -13,11 +22,8 @@
     <label for="post_title">Title</label>
     <input class="u-full-width" type="text" placeholder="Title" id="post_title" name="post_title" value="{{post.post_title}}">
     <label for="post_body">Body</label>
-    <textarea class="u-full-width" placeholder="HTML" id="post_body" name="post_body" rows=50>{{post.post_body}}</textarea>
-    <div class="u-pull-right">
-      <a class="button-link" href="/post">Cancel</a>
-      <button class="button-primary" type="submit">Submit</button>
-    </div>
-    <div class="u-cf"></div>
+    <textarea class="u-full-width" placeholder="HTML" id="post_body" name="post_body" rows="15">{{post.post_body}}</textarea>
+
   </div>
+
 </form>

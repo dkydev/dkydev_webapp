@@ -7,13 +7,18 @@
     "watch": "onchange \"**/*.ts\" -i -- npm run build"
   },
   "dependencies": {
+    "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "express-session": "^1.14.0",
+    "express-winston": "^2.0.0",
+    "helmet": "^2.1.2",
     "method-override": "^2.3.6",
     "moment": "^2.14.1",
     "mustache": "^2.2.1",
     "pg": "^6.0.3",
-    "validator": "^5.5.0"
+    "validator": "^5.5.0",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "errorhandler": "^1.4.3",
