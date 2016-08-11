@@ -65,7 +65,21 @@ small, .font-small {
     text-decoration: none;
     letter-spacing: 6px;
     line-height: 1.2em;
+    display: block;
+    margin: 0px auto;
+    width: 206px;
 }
+
+.title > img {
+    display:block;
+    margin: -5px 58px -15px;
+    height: 38px;
+}
+
+.title:hover {
+    color:#ffffff;
+}
+
 .text-center {
     text-align: center;
     vertical-align: middle;
