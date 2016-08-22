@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcrypt-nodejs";
 import {ResultSet, Client, getClient} from "../db";
 
 export class User {

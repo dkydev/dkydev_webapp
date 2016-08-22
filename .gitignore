@@ -4,3 +4,4 @@ var/config/index_production.ts
 **/*.js.map
 node_modules
 typings
+typings/*

@@ -7,7 +7,7 @@
     "watch": "onchange \"**/*.ts\" -i -- npm run build"
   },
   "dependencies": {
-    "bcrypt": "^0.8.7",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-session": "^1.14.0",
