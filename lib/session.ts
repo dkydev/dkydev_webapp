@@ -1,6 +1,7 @@
 import * as Express from "express";
 import * as ExpressSession from "express-session";
 import {getClient, Client, ResultSet} from "./db";
+import config from "../var/config";
 import * as moment from "moment";
 import {EventEmitter} from "events";
 
@@ -21,7 +22,7 @@ export class Message {
 export function DKYSessionHandler(): Express.RequestHandler {
     return ExpressSession({
         store: new DKYSessionStore(),
-        secret: "banana",
+        secret: config.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
         cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days

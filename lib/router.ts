@@ -20,7 +20,7 @@ export default function (): Router {
     router.all("/post/:action?/:id?", (req: Request, res: Response, next: any) => {
         if (!req.session["user_id"]) {
             DKYSession.raiseMessage(req.session, "danger", "Permission denied.");
-            res.redirect("/");
+            res.redirect("/login");
         } else {
             next();
         }
