@@ -7,6 +7,15 @@ export default function (): Router {
 
     var router: Router = Router();
 
+    var authenticate = (req: Request, res: Response, next: any) => {
+        if (!req.session["user_id"]) {
+            DKYSession.raiseMessage(req.session, "danger", "You are not logged in.");
+            res.redirect("/login");
+        } else {
+            next();
+        }
+    }
+
     // Routes.
     router.all("/", (req: Request, res: Response, next: any) => {
         defaultRoutes.index(req, res).catch(next);
@@ -17,14 +26,13 @@ export default function (): Router {
     router.post("/login", (req: Request, res: Response, next: any) => {
         defaultRoutes.login(req, res).catch(next);
     });
-    router.all("/post/:action?/:id?", (req: Request, res: Response, next: any) => {
-        if (!req.session["user_id"]) {
-            DKYSession.raiseMessage(req.session, "danger", "Permission denied.");
-            res.redirect("/");
-        } else {
-            next();
-        }
-    }, (req: Request, res: Response, next: any) => {
+    router.get("/logout", authenticate, (req: Request, res: Response, next: any) => {
+        defaultRoutes.getLogout(req, res).catch(next);
+    });
+    router.post("/logout", authenticate, (req: Request, res: Response, next: any) => {
+        defaultRoutes.logout(req, res).catch(next);
+    });
+    router.all("/post/:action?/:id?", authenticate, (req: Request, res: Response, next: any) => {
         postRoutes.post(req, res).catch(next);
     });
     // Catch all.
