@@ -18,7 +18,7 @@
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/skeleton.css">
+    <!-- <link rel="stylesheet" href="/css/skeleton.css">-->
     <link rel="stylesheet" href="/css/main.css">
 
     <script src="/js/prettify.js"></script>
@@ -43,16 +43,11 @@
             <div class="u-cf"></div>
         </div>
     </div>
-    <div class="right-col">
-
-        <div class="row">
-            <div class="twelve columns">
-                {{#message}}
-                <div class="alert alert-{{message.type}}">{{message.text}}</div>
-                {{/message}} {{> body}}
-            </div>
+    <div class="middle-col">
+        <div class="container">
+            {{#message}}<div class="alert alert-{{message.type}}">{{message.text}}</div>{{/message}}
+            {{> body}}
         </div>
-
     </div>
 
 </body>

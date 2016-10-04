@@ -15,6 +15,27 @@ export function index(req: Request, res: Response): Promise<any> {
     });
 };
 
+export function getLogout(req: Request, res: Response): Promise<any> {
+    return sendHTML(req, res, {
+        template: "logout.html",
+        title: "logout - dkydev",
+    });
+}
+
+export function logout(req: Request, res: Response): Promise<any> {
+    return new Promise((resolve, reject) => {
+        req.session.regenerate((error: any) => {
+            if (error) {
+                reject(error);
+            } else {
+                DKYSession.raiseMessage(req.session, "success", "Logged out successfully.");
+                res.redirect("/");
+                resolve();
+            }
+        });
+    });
+}
+
 export function getLogin(req: Request, res: Response): Promise<any> {
     return sendHTML(req, res, {
         template: "login.html",

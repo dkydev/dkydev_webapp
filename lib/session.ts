@@ -20,7 +20,7 @@ export class Message {
 
 export function DKYSessionHandler(): Express.RequestHandler {
     return ExpressSession({
-        store: new DKYSessionStore(),
+        store: sessionStore,
         secret: "banana",
         resave: false,
         saveUninitialized: false,
@@ -97,3 +97,5 @@ export class DKYSessionStore extends ExpressSession.Store {
     }
 
 }
+
+export var sessionStore = new DKYSessionStore();
