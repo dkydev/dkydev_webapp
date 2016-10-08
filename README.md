@@ -1,3 +1,1 @@
-dkydev.com
-
-Using <a href="http://getskeleton.com/">skeleton</a> boilerplate.
+# [dkydev.com](http://www.dkydev.com)
