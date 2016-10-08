@@ -1,8 +1,7 @@
 deploy.sh
+var/config/index.ts
 var/config/index_production.ts
 var/config/index_development.ts
 **/*.js
 **/*.js.map
 node_modules
-typings
-typings/*
