@@ -4,9 +4,14 @@ html {
 }
 
 body {
-  font-family: 'Roboto',sans-serif;
+
+    font-family: 'Roboto',sans-serif;
+    font-size: 1.0rem;
+    line-height: 1.5em;
+    color: #3A4145;
+    
+  
   font-weight: 400;
-  color: #333;
   height: 100%;
   background: #e5e7e8;
 }
@@ -34,7 +39,7 @@ h4 {font-size: 1.5em;}
 
 
 small, .font-small {
-    font-size: 0.7em;
+    font-size: 0.8em;
 }
 
 .alert-danger {
@@ -83,7 +88,7 @@ small, .font-small {
 
 .text-center {
     text-align: center;
-    vertical-align: middle;
+    vertical-align: middle
 }
 
 .card-container {
@@ -124,17 +129,16 @@ small, .font-small {
 }
 
 a {
-    color: #00daff;
+    color: #03adef;
 }
 
 .card {
-    padding:25px;
+    padding: 35px 45px;
     background-color: white;
     margin:0px 0px;
     border-bottom: 2px solid #e1e1e1;
+    overflow: visible;
 }
-
-
 
 @media (min-width: 1024px) {
   h2 {font-size: 2.4em;}
@@ -149,7 +153,7 @@ a {
         overflow: auto;
         max-height: 100%;
         right: 0;
-        left: 350px;
+        left: 320px;
         padding:20px 0px 10px 0px;
     }
 
@@ -162,7 +166,7 @@ a {
     }
     .left-col {
         position: absolute;
-        width:350px;
+        width:320px;
         height:100%;
         padding: 0px;
     }
@@ -171,7 +175,63 @@ a {
     }
 
     .card {
-    margin: 0px 25px 10px;
+    margin: 0px 35px 10px;
     
   }
+}
+
+label {
+    font-weight:bold;
+}
+
+.input {
+    width: 100%;
+    padding: 4px 8px;
+    border-radius:6px;
+    border: 1px solid #aeb4b7;
+    box-sizing: border-box; 
+}
+
+.input-group {
+    margin-bottom: 5px;
+}
+
+.actions {
+    float:right;
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+
+.actions > a, .actions button {
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.button-link {
+    color: #03adef;
+    text-decoration: underline;
+    padding: 8px 14px;
+    background:none;
+    border:none;
+    line-height: normal;
+}
+
+.clearfix {
+    clear:both;
+}
+
+table {
+    width:100%;
+}
+
+th, td {
+    padding: 6px 12px;
+}
+
+tr {
+    border-bottom: 1px solid #e5e7e8;
+}
+
+thead {
+    border-bottom: 2px solid #e5e7e8;
 }

@@ -1,19 +1,24 @@
-import {ResultSet, Client, getClient} from "../db";
+import { ResultSet, Client, getClient } from "../db";
 import * as moment from "moment";
 import * as validator from "validator";
+
 
 export class Post {
     public post_id: number;
     public post_title: string;
+    public post_ts: number;
     public post_date: string;
     public post_body: string;
+    public post_markdown: string;
     public post_status: string;
     public post_labels: string[];
     constructor(obj: any) {
         this.post_id = obj.post_id;
         this.post_title = obj.post_title;
+        this.post_ts = obj.post_ts;
         this.post_date = obj.post_date;
         this.post_body = obj.post_body;
+        this.post_markdown = obj.post_markdown;
         this.post_status = obj.post_status;
         this.post_labels = obj.post_labels ? obj.post_labels : [];
     }
@@ -26,7 +31,7 @@ export class Post {
             return false;
         if (!obj.post_title || !validator.isLength(obj.post_title, { max: 255 }))
             return false;
-        if (!obj.post_body || !validator.isLength(obj.post_body, { max: 10000 }))
+        if (!obj.post_markdown || !validator.isLength(obj.post_markdown, { max: 10000 }))
             return false;
         return true;
     }
@@ -43,8 +48,25 @@ export function removePost(post_id: number): Promise<any> {
         });
 }
 
+function renderMarkdown(markdown: string): string {
+    var hljs = require('highlight.js');
+    var md = require("markdown-it")({
+        highlight: function (str, lang) {
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    return hljs.highlight(lang, str).value;
+                } catch (__) { }
+            }
+            return ''; // use external default escaping
+        }
+    });
+
+    return md.render(markdown);
+}
+
 export function savePost(post: Post): Promise<any> {
-    var post_date = moment(post.post_date, "MMM DD, YYYY").unix();
+    post.post_ts = moment(post.post_date, "MMM DD, YYYY").unix();
+    post.post_body = renderMarkdown(post.post_markdown);
     var client: Client;
     if (post.post_id) {
         return getClient()
@@ -55,11 +77,12 @@ export function savePost(post: Post): Promise<any> {
                     SET 
                         post_title = $1,
                         post_date = $2,
-                        post_body = $3,
-                        post_status = $4
+                        post_markdown = $3,
+                        post_status = $4,
+                        post_body = $5
                     WHERE
-                        post.post_id = $5;
-                `, [post.post_title, post_date, post.post_body, post.post_status, post.post_id]);
+                        post.post_id = $6;
+                `, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body, post.post_id]);
             }).then(() => {
                 return client.query<any>(`DELETE FROM post_label WHERE post_label.post_id = $1;`, [post.post_id]);
             }).then(() => {
@@ -70,7 +93,7 @@ export function savePost(post: Post): Promise<any> {
     } else {
         return getClient().then((newClient: Client) => {
             client = newClient;
-            return client.query<any>(`INSERT INTO post(post_title, post_date, post_body, post_status) VALUES ($1, $2, $3, $4) RETURNING post_id`, [post.post_title, post_date, post.post_body, post.post_status]);
+            return client.query<any>(`INSERT INTO post(post_title, post_date, post_markdown, post_status, post_body) VALUES ($1, $2, $3, $4, $5) RETURNING post_id`, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body]);
         }).then((resultSet: ResultSet<any>) => {
             return Promise.all(post.post_labels.map((post_label: string) => {
                 return client.query<any>(`INSERT INTO post_label(post_id, post_label) VALUES ($1, $2)`, [resultSet.rows[0].post_id, post_label]);

@@ -2,10 +2,8 @@
     "compilerOptions": {
         "target": "es3",
         "module": "commonjs",
-        "listFiles": true,
         "sourceMap": true
     },
-    "exclude": [
-        "node_modules"
-    ]
+    "compileOnSave": true,
+    "buildOnSave": true
 }

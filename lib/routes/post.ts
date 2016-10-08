@@ -1,8 +1,8 @@
-import {Request, Response} from "express";
+import { Request, Response } from "express";
 import * as moment from "moment";
 import sendHTML from "../renderer";
 import * as modelPost from "../models/post";
-import {Post} from "../models/post";
+import { Post } from "../models/post";
 import * as DKYSession from "../session";
 
 export function post(req: Request, res: Response): Promise<any> {
@@ -58,6 +58,7 @@ function edit(req: Request, res: Response): Promise<any> {
         return sendHTML(req, res, {
             template: "edit.html",
             title: "dkydev.com add",
+            page_title: "New Post",
             post: { post_date: moment().format("MMM DD, YYYY") },
             enabled: true
         });
@@ -71,6 +72,7 @@ function edit(req: Request, res: Response): Promise<any> {
             return sendHTML(req, res, {
                 template: "edit.html",
                 title: "dkydev.com edit",
+                page_title: "Edit Post",
                 post: post,
                 enabled: post.post_status == "Enabled"
             });

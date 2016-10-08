@@ -1,29 +1,52 @@
 <form action="/post/save" method="POST">
   <div class="card">
 
-    <div>
-      <div class="u-pull-right">
-        <a class="button-link" href="/post">Cancel</a>
-        <button class="button-primary" type="submit">Submit</button>
-      </div>
-      <div class="u-cf"></div>
+    <div class="actions">
+      <a class="button-link" href="/post">Cancel</a>
+      <button class="button-link" type="submit">Submit</button>
     </div>
 
+    <h2>{{page_title}}</h2>
+
+    <div class="clearfix"></div>
+
     {{#post.post_id}} <input type="hidden" name="post_id" value="{{post.post_id}}" /> {{/post.post_id}}
-    <label for="post_enabled">Status</label>
-    <select class="u-full-width" id="post_status" name="post_status">
-      <option {{#enabled}}selected{{/enabled}}>Enabled</option>
-      <option {{^enabled}}selected{{/enabled}}>Disabled</option>
-    </select>
-    <label for="post_date">Date</label>
-    <input class="u-full-width" type="text" placeholder="{{date}}" id="post_date" name="post_date" value="{{post.post_date}}">
-    <label for="post_labels">Labels</label>
-    <input class="u-full-width" type="text" placeholder="label1,label2,label3" id="post_labels" name="post_labels" value="{{post.post_labels}}">
-    <label for="post_title">Title</label>
-    <input class="u-full-width" type="text" placeholder="Title" id="post_title" name="post_title" value="{{post.post_title}}">
-    <label for="post_body">Body</label>
-    <textarea class="u-full-width" placeholder="HTML" id="post_body" name="post_body" rows="15">{{post.post_body}}</textarea>
+
+    <div class="input-group">
+      <label for="post_enabled">Status</label><br>
+      <select class="input" id="post_status" name="post_status">
+        <option {{#enabled}}selected{{/enabled}}>Enabled</option>
+        <option {{^enabled}}selected{{/enabled}}>Disabled</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label for="post_date">Date</label><br>
+      <input class="input" type="text" placeholder="{{date}}" id="post_date" name="post_date" value="{{post.post_date}}">
+    </div>
+
+    <div class="input-group">
+      <label for="post_labels">Labels</label><br>
+      <input class="input" type="text" placeholder="label1,label2,label3" id="post_labels" name="post_labels" value="{{post.post_labels}}">
+    </div>
+
+    <div class="input-group">
+      <label for="post_title">Title</label><br>
+      <input class="input" type="text" placeholder="Title" id="post_title" name="post_title" value="{{post.post_title}}">
+    </div>
+
+    <div class="input-group">
+      <label for="post_markdown">Markdown</label><br>
+      <textarea class="input" placeholder="HTML" id="post_markdown" name="post_markdown" rows="15">{{post.post_markdown}}</textarea>
+    </div>
 
   </div>
+
+  {{#post.post_body}}
+  <div class="card">
+    <h2>{{post.post_title}}</h2>
+    {{{post.post_body}}}
+  </div>
+  {{/post.post_body}}
 
 </form>

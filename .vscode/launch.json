@@ -7,12 +7,12 @@
             "request": "launch",
             "program": "${workspaceRoot}/lib/app.js",
             "stopOnEntry": false,
-            "args": [],
+            "args": ["--harmony"],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "build",
+            "runtimeExecutable": null,
             "runtimeArgs": [
-                "--nolazy",
-                "--harmony"
+                "--nolazy"
             ],
             "env": {
                 "NODE_ENV": "development"
@@ -26,8 +26,19 @@
             "port": 5858,
             "address": "localhost",
             "restart": false,
-            "sourceMaps": true,
-            "localRoot": "${workspaceRoot}"
+            "sourceMaps": false,
+            "outDir": null,
+            "localRoot": "${workspaceRoot}",
+            "remoteRoot": null
+        },
+        {
+            "name": "Attach to Process",
+            "type": "node",
+            "request": "attach",
+            "processId": "${command.PickProcess}",
+            "port": 5858,
+            "sourceMaps": false,
+            "outDir": null
         }
     ]
 }
