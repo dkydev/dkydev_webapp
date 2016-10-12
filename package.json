@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "start": "node lib/app.js --harmony",
     "build": "tsc -p ./",
     "watch": "onchange \"**/*.ts\" -i -- npm run build"
   },
