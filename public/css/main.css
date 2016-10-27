@@ -3,7 +3,7 @@ html {
     height:100%;
 }
 
-body {font-family: 'Roboto',sans-serif;font-size: 1.0rem;line-height: 1.5em;color: #3A4145;font-weight: 400;height: 100%;background: #e5e7e8;}
+body {font-family: 'Roboto',sans-serif;font-size: 1.0rem;line-height: 1.5em;color: #181a1b;font-weight: 400;height: 100%;background: #e5e7e8;}
 
 p {margin-bottom: 1.3em;}
 
@@ -110,7 +110,7 @@ small, .font-small {
 }
 
 .left-col {
-    background: #1d1d1d;
+    background: #181a1b;
     height: auto;
     display: block;
     color: white;
