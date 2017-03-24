@@ -30,22 +30,18 @@
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="left-col">
-        <div>
-            <a href="/" class="title">
-                <img src="/img/duck.png"> dkydev
-            </a>
-            <div class="text-center font-small">
-                <a href="mailto:nick@dkydev.com">nick@dkydev.com</a> |
-                <a href="https://github.com/nicholas-robson">github</a> | &copy; dkydev 2016
-            </div>
+    <div class="header">
+        <a href="/" class="title">
+            <img src="/img/duck.png"> dkydev
+        </a>
+        <div class="text-center font-small">
+            <a href="mailto:nick@dkydev.com">nick@dkydev.com</a> |
+            <a href="https://github.com/nicholas-robson">github</a> | &copy; dkydev 2016
         </div>
     </div>
-    <div class="middle-col">
-        <div class="container">
-            {{#message}}
-            <div class="alert alert-{{message.type}}">{{message.text}}</div>{{/message}} {{> body}}
-        </div>
+    <div class="container">
+        {{#message}}
+        <div class="alert alert-{{message.type}}">{{message.text}}</div>{{/message}} {{> body}}
     </div>
 
     <script src="/js/highlightjs/highlight.pack.js"></script>

@@ -17,7 +17,7 @@ export default function (): Router {
     }
 
     // Routes.
-    router.all("/", (req: Request, res: Response, next: any) => {
+    router.all(["/", "/label/:label?", "/p/:p?", "/label/:label?/p/:p?"], (req: Request, res: Response, next: any) => {
         defaultRoutes.index(req, res).catch(next);
     });
     router.get("/login", (req: Request, res: Response, next: any) => {

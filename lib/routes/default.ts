@@ -6,7 +6,7 @@ import sendHTML from "../renderer";
 import * as DKYSession from "../session";
 
 export function index(req: Request, res: Response): Promise<any> {
-    return getBlogPosts().then((posts: Array<Post>) => {
+    return getBlogPosts(req.params.label, req.params.p).then((posts: Array<Post>) => {
         return sendHTML(req, res, {
             template: "home.html",
             title: "dkydev.com home",

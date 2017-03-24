@@ -1,8 +1,8 @@
 import * as Express from "express";
 import * as ExpressSession from "express-session";
-import {getClient, Client, ResultSet} from "./db";
+import { getClient, Client, QueryResult } from "./db";
 import * as moment from "moment";
-import {EventEmitter} from "events";
+import { EventEmitter } from "events";
 
 export class Message {
     public static INFO: string = "info";
@@ -56,8 +56,8 @@ export class DKYSessionStore extends ExpressSession.Store {
 
     public get = (sid: string, callback: (error: any, result?: any) => void): any => {
         getClient().then((client: Client) => {
-            return client.query<any>("SELECT * FROM session WHERE sid = $1", [sid]);
-        }).then((result: ResultSet<any>) => {
+            return client.query("SELECT * FROM session WHERE sid = $1", [sid]);
+        }).then((result: QueryResult) => {
             if (result.rowCount === 0) {
                 callback(null, null);
             } else {
@@ -72,12 +72,12 @@ export class DKYSessionStore extends ExpressSession.Store {
         var client: Client;
         getClient().then((newClient: Client) => {
             client = newClient;
-            return client.query<any>("SELECT * FROM session WHERE sid = $1", [sid]);
-        }).then((result: ResultSet<any>) => {
+            return client.query("SELECT * FROM session WHERE sid = $1", [sid]);
+        }).then((result: QueryResult) => {
             if (result.rowCount === 0) {
-                return client.query<any>("INSERT INTO session(sid, data, expire) VALUES ($1, $2, $3)", [sid, JSON.stringify(session), moment().add(30, "days").unix()]);
+                return client.query("INSERT INTO session(sid, data, expire) VALUES ($1, $2, $3)", [sid, JSON.stringify(session), moment().add(30, "days").unix()]);
             } else {
-                return client.query<any>("UPDATE session SET data = $2, expire = $3 WHERE sid = $1", [sid, JSON.stringify(session), moment().add(30, "days").unix()]);
+                return client.query("UPDATE session SET data = $2, expire = $3 WHERE sid = $1", [sid, JSON.stringify(session), moment().add(30, "days").unix()]);
             }
         }).then(() => {
             callback(null);
@@ -88,7 +88,7 @@ export class DKYSessionStore extends ExpressSession.Store {
 
     public touch = (sid: string, session: any, callback: (error: any) => void): any => {
         getClient().then((client: Client) => {
-            return client.query<any>("UPDATE session SET data = $2, expire = $3 WHERE sid = $1", [sid, JSON.stringify(session), moment().add(30, "days").unix()]);
+            return client.query("UPDATE session SET data = $2, expire = $3 WHERE sid = $1", [sid, JSON.stringify(session), moment().add(30, "days").unix()]);
         }).then(() => {
             callback(null);
         }).catch((error: any) => {

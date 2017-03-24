@@ -1,5 +1,5 @@
 import * as bcrypt from "bcrypt-nodejs";
-import {ResultSet, Client, getClient} from "../db";
+import { QueryResult, Client, getClient } from "../db";
 
 export class User {
     public user_id: number;
@@ -35,12 +35,12 @@ export function validatePassword(password: string, encrypted: string): Promise<b
 
 export function getUserbyEmail(email: string): Promise<User> {
     return getClient().then((client: Client) => {
-        return client.query<User>(`
+        return client.query(`
             SELECT *
             FROM "user" 
             WHERE email = $1
         `, [email]);
-    }).then((resultSet: ResultSet<User>) => {
+    }).then((resultSet: QueryResult) => {
         if (resultSet.rows.length == 0) {
             return null;
         } else {

@@ -1,7 +1,6 @@
-import { ResultSet, Client, getClient } from "../db";
+import { QueryResult, Client, getClient } from "../db";
 import * as moment from "moment";
 import * as validator from "validator";
-
 
 export class Post {
     public post_id: number;
@@ -37,15 +36,16 @@ export class Post {
     }
 }
 
-export function removePost(post_id: number): Promise<any> {
-    var client: Client;
-    return getClient()
-        .then((newClient: Client) => {
-            client = newClient;
-            return client.query<Post>(`DELETE FROM post WHERE post.post_id = $1;`, [post_id]);
-        }).then(() => {
-            return client.query<any>(`DELETE FROM post_label WHERE post_label.post_id = $1;`, [post_id]);
-        });
+export function removePost(post_id: number): Promise<QueryResult> {
+    return getClient().then((client: Client) => {
+        return client.query(`DELETE FROM post WHERE post.post_id = $1;`, [post_id]);
+    }).then((result: QueryResult) => {
+        return removePostLabels(post_id);
+    });
+}
+
+export function removePostLabels(post_id: number): Promise<QueryResult> {
+    return getClient().then((client: Client) => client.query(`DELETE FROM post_label WHERE post_label.post_id = $1;`, [post_id]));
 }
 
 function renderMarkdown(markdown: string): string {
@@ -72,7 +72,7 @@ export function savePost(post: Post): Promise<any> {
         return getClient()
             .then((newClient: Client) => {
                 client = newClient;
-                return client.query<Post>(`
+                return client.query(`
                     UPDATE post 
                     SET 
                         post_title = $1,
@@ -84,35 +84,44 @@ export function savePost(post: Post): Promise<any> {
                         post.post_id = $6;
                 `, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body, post.post_id]);
             }).then(() => {
-                return client.query<any>(`DELETE FROM post_label WHERE post_label.post_id = $1;`, [post.post_id]);
+                return client.query(`DELETE FROM post_label WHERE post_label.post_id = $1;`, [post.post_id]);
             }).then(() => {
                 return Promise.all(post.post_labels.map((post_label: string) => {
-                    return client.query<any>(`INSERT INTO post_label(post_id, post_label) VALUES ($1, $2)`, [post.post_id, post_label]);
+                    return client.query(`INSERT INTO post_label(post_id, post_label) VALUES ($1, $2)`, [post.post_id, post_label]);
                 }));
             });
     } else {
         return getClient().then((newClient: Client) => {
             client = newClient;
-            return client.query<any>(`INSERT INTO post(post_title, post_date, post_markdown, post_status, post_body) VALUES ($1, $2, $3, $4, $5) RETURNING post_id`, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body]);
-        }).then((resultSet: ResultSet<any>) => {
+            return client.query(`INSERT INTO post(post_title, post_date, post_markdown, post_status, post_body) VALUES ($1, $2, $3, $4, $5) RETURNING post_id`, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body]);
+        }).then((resultSet: QueryResult) => {
             return Promise.all(post.post_labels.map((post_label: string) => {
-                return client.query<any>(`INSERT INTO post_label(post_id, post_label) VALUES ($1, $2)`, [resultSet.rows[0].post_id, post_label]);
+                return client.query(`INSERT INTO post_label(post_id, post_label) VALUES ($1, $2)`, [resultSet.rows[0].post_id, post_label]);
             }));
         });
     }
 }
 
-export function getBlogPosts(): Promise<Array<Post>> {
+export function getBlogPosts(label: string = null, page: number = 1): Promise<Array<Post>> {
+    var limit: number = 5;
+    var offset: number = (page - 1) * limit;
     return getClient().then((client: Client) => {
-        return client.query<Post>(`
-            SELECT post.*, array_agg(post_label.post_label) AS post_labels
-            FROM post 
-            LEFT JOIN post_label ON post_label.post_id = post.post_id 
-            WHERE post.post_status = 'Enabled'
-            GROUP BY post.post_id
-            ORDER BY post.post_date DESC
-        `);
-    }).then((resultSet: ResultSet<Post>) => {
+        if (label) {
+            return client.query(`
+                SELECT post.*, array_agg(post_label.post_label) AS post_labels
+                FROM post 
+                LEFT JOIN post_label ON post_label.post_id = post.post_id 
+                WHERE post.post_status = 'Enabled' AND post_label.post_label = $1
+                GROUP BY post.post_id ORDER BY post.post_date DESC LIMIT $2 OFFSET $3`, [label, limit, offset]);
+        } else {
+            return client.query(`
+                SELECT post.*, array_agg(post_label.post_label) AS post_labels
+                FROM post 
+                LEFT JOIN post_label ON post_label.post_id = post.post_id 
+                WHERE post.post_status = 'Enabled'
+                GROUP BY post.post_id ORDER BY post.post_date DESC LIMIT $1 OFFSET $2`, [limit, offset]);
+        }
+    }).then((resultSet: QueryResult) => {
         return new Promise<Array<Post>>((resolve, reject) => {
             resolve(resultSet.rows.map<Post>((obj: any) => {
                 obj.post_date = moment.unix(obj.post_date).format("MMM D, YYYY");
@@ -124,14 +133,14 @@ export function getBlogPosts(): Promise<Array<Post>> {
 
 export function getAllPosts(): Promise<Array<Post>> {
     return getClient().then((client: Client) => {
-        return client.query<Post>(`
+        return client.query(`
             SELECT post.*, array_agg(post_label.post_label) AS post_labels
             FROM post
             LEFT JOIN post_label ON post_label.post_id = post.post_id 
             GROUP BY post.post_id
             ORDER BY post.post_date DESC
         `);
-    }).then((resultSet: ResultSet<Post>) => {
+    }).then((resultSet: QueryResult) => {
         return new Promise<Array<Post>>((resolve, reject) => {
             resolve(resultSet.rows.map<Post>((obj: any) => {
                 obj.post_date = moment.unix(obj.post_date).format("MMM D, YYYY");
@@ -143,14 +152,14 @@ export function getAllPosts(): Promise<Array<Post>> {
 
 export function getPost(post_id: number): Promise<Post> {
     return getClient().then((client: Client) => {
-        return client.query<Post>(`
+        return client.query(`
             SELECT post.*, array_agg(post_label.post_label) AS post_labels
             FROM post
             LEFT JOIN post_label ON post_label.post_id = post.post_id 
             WHERE post.post_id = $1
             GROUP BY post.post_id
         `, [post_id]);
-    }).then((resultSet: ResultSet<Post>) => {
+    }).then((resultSet: QueryResult) => {
         return new Promise<Post>((resolve, reject) => {
             var obj: any = resultSet.rows.pop();
             obj.post_date = moment.unix(obj.post_date).format("MMM D, YYYY");

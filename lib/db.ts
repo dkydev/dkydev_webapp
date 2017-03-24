@@ -1,6 +1,6 @@
 import config from "../var/config";
 import * as pg from "pg";
-import {Pool, Client, ResultSet} from "pg";
+import {Pool, Client, QueryResult} from "pg";
 
 // `postgresql://${config.DATABASE_USERNAME}:${config.DATABASE_PASSWORD}@#${config.DATABASE_HOST}/${config.DATABASE_NAME}:${config.DATABASE_PORT}`;
 
@@ -31,4 +31,4 @@ export function getClient(): Promise<Client> {
     });
 }
 
-export {pg, pool, Client, ResultSet};
+export {pg, pool, Client, QueryResult};
