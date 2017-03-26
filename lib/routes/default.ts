@@ -4,9 +4,12 @@ import {getBlogPosts, Post} from "../models/post";
 import * as DKYUser from "../models/user";
 import sendHTML from "../renderer";
 import * as DKYSession from "../session";
+import * as validator from "validator";
 
 export function index(req: Request, res: Response): Promise<any> {
-    return getBlogPosts(req.params.label, req.params.p).then((posts: Array<Post>) => {
+    // Limit page input to 1-999.
+    var page:number = isNaN(req.params.p) ? 1 : Math.min(999, Math.max(1, req.params.p));
+    return getBlogPosts(req.params.label, page).then((posts: Array<Post>) => {
         return sendHTML(req, res, {
             template: "home.html",
             title: "dkydev.com home",
