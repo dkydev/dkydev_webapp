@@ -86,7 +86,8 @@ small, .font-small {
 }
 
 .container {
-    margin:10px;
+    margin: 0px auto;
+    max-width: 800px;
 }
 
 .header {
@@ -104,12 +105,11 @@ a {
 }
 
 .card {
-    padding: 35px 45px;
+    padding: 15px 15px;
+    margin-top: 20px;
     background-color: white;
-    margin: 0px auto 10px;
     border-bottom: 2px solid #cccccc;
     overflow: visible;
-    max-width:800px;
 }
 
 label {
@@ -166,4 +166,10 @@ tr {
 
 thead {
     border-bottom: 2px solid #e5e7e8;
+}
+
+a.next-link {
+    display: block;
+    margin: 20px auto;
+    text-align: center;
 }

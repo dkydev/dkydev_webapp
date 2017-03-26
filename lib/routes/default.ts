@@ -1,6 +1,6 @@
-import {Request, Response} from "express";
+import { Request, Response } from "express";
 import * as moment from "moment";
-import {getBlogPosts, Post} from "../models/post";
+import { getBlogPosts, getNext, Post } from "../models/post";
 import * as DKYUser from "../models/user";
 import sendHTML from "../renderer";
 import * as DKYSession from "../session";
@@ -8,12 +8,18 @@ import * as validator from "validator";
 
 export function index(req: Request, res: Response): Promise<any> {
     // Limit page input to 1-999.
-    var page:number = isNaN(req.params.p) ? 1 : Math.min(999, Math.max(1, req.params.p));
-    return getBlogPosts(req.params.label, page).then((posts: Array<Post>) => {
+    var page: number = isNaN(req.params.p) ? 1 : Math.min(999, Math.max(1, req.params.p));
+    return Promise.all([
+        getBlogPosts(req.params.label, page),
+        getNext(req.params.label, page)
+    ]).then((results: any[]) => {
         return sendHTML(req, res, {
             template: "home.html",
             title: "dkydev.com home",
-            posts: posts
+            posts: results[0],
+            hasNext: results[1] > page,
+            page : results[1],
+            label : req.params.label
         });
     });
 };

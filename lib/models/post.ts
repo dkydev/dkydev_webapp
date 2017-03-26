@@ -102,7 +102,7 @@ export function savePost(post: Post): Promise<any> {
     }
 }
 
-export function getBlogPosts(label: string = null, page: number = 1): Promise<Array<Post>> {
+export function getBlogPosts(label: string = null, page: number = 1): Promise<Post[]> {
     var limit: number = 5;
     var offset: number = (page - 1) * limit;
     return getClient().then((client: Client) => {
@@ -127,6 +127,33 @@ export function getBlogPosts(label: string = null, page: number = 1): Promise<Ar
                 obj.post_date = moment.unix(obj.post_date).format("MMM D, YYYY");
                 return new Post(obj);
             }));
+        });
+    });
+}
+
+export function getNext(label: string = null, page: number = 1):Promise<number> {
+    var limit: number = 5;
+    var offset: number = (page - 1) * limit;
+    return getClient().then((client: Client) => {
+        if (label) {
+            return client.query(`
+                SELECT COUNT(*) AS post_count
+                FROM post
+                LEFT JOIN post_label ON post_label.post_id = post.post_id 
+                WHERE post.post_status = 'Enabled' AND post_label.post_label = $1`, [label]);
+        } else {
+            return client.query(`
+                SELECT COUNT(*) AS post_count
+                FROM post
+                WHERE post.post_status = 'Enabled'`);
+        }
+    }).then((resultSet: QueryResult) => {
+        return new Promise<number>((resolve, reject) => {
+            if (resultSet.rows[0].post_count > limit * page) {
+                resolve(page + 1);
+            } else {
+                resolve(page);
+            }
         });
     });
 }
