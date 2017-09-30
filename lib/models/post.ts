@@ -9,6 +9,8 @@ export class Post {
     public post_date: string;
     public post_body: string;
     public post_markdown: string;
+    public post_intro: string;
+    public post_intro_markdown: string;
     public post_status: string;
     public post_labels: string[];
     constructor(obj: any) {
@@ -18,6 +20,8 @@ export class Post {
         this.post_date = obj.post_date;
         this.post_body = obj.post_body;
         this.post_markdown = obj.post_markdown;
+        this.post_intro = obj.post_intro;
+        this.post_intro_markdown = obj.post_intro_markdown;
         this.post_status = obj.post_status;
         this.post_labels = obj.post_labels ? obj.post_labels : [];
     }
@@ -29,6 +33,8 @@ export class Post {
         if (!obj.post_status || !validator.isIn(obj.post_status, ["Enabled", "Disabled"]))
             return false;
         if (!obj.post_title || !validator.isLength(obj.post_title, { max: 255 }))
+            return false;
+        if (!validator.isLength(obj.post_intro_markdown, { max: 255 }))
             return false;
         if (!obj.post_markdown || !validator.isLength(obj.post_markdown, { max: 10000 }))
             return false;
@@ -66,6 +72,7 @@ function renderMarkdown(markdown: string): string {
 
 export function savePost(post: Post): Promise<any> {
     post.post_ts = moment(post.post_date, "MMM DD, YYYY").unix();
+    post.post_intro = renderMarkdown(post.post_intro_markdown);
     post.post_body = renderMarkdown(post.post_markdown);
     var client: Client;
     if (post.post_id) {
@@ -79,10 +86,12 @@ export function savePost(post: Post): Promise<any> {
                         post_date = $2,
                         post_markdown = $3,
                         post_status = $4,
-                        post_body = $5
+                        post_body = $5,
+                        post_intro = $6,
+                        post_intro_markdown = $7
                     WHERE
-                        post.post_id = $6;
-                `, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body, post.post_id]);
+                        post.post_id = $8;
+                `, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body, post.post_intro, post.post_intro_markdown, post.post_id]);
             }).then(() => {
                 return client.query(`DELETE FROM post_label WHERE post_label.post_id = $1;`, [post.post_id]);
             }).then(() => {
@@ -93,7 +102,7 @@ export function savePost(post: Post): Promise<any> {
     } else {
         return getClient().then((newClient: Client) => {
             client = newClient;
-            return client.query(`INSERT INTO post(post_title, post_date, post_markdown, post_status, post_body) VALUES ($1, $2, $3, $4, $5) RETURNING post_id`, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body]);
+            return client.query(`INSERT INTO post(post_title, post_date, post_markdown, post_status, post_body, post_intro, post_intro_markdown) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING post_id`, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body, post.post_intro, post.post_intro_markdown]);
         }).then((resultSet: QueryResult) => {
             return Promise.all(post.post_labels.map((post_label: string) => {
                 return client.query(`INSERT INTO post_label(post_id, post_label) VALUES ($1, $2)`, [resultSet.rows[0].post_id, post_label]);

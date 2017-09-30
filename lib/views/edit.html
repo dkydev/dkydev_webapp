@@ -36,17 +36,40 @@
     </div>
 
     <div class="input-group">
-      <label for="post_markdown">Markdown</label><br>
-      <textarea class="input" placeholder="HTML" id="post_markdown" name="post_markdown" rows="15">{{post.post_markdown}}</textarea>
+      <label for="post_intro">Intro</label><br>
+      <textarea class="input" placeholder="Intro markdown..." id="post_intro" name="post_intro_markdown" rows="10">{{post.post_intro_markdown}}</textarea>
+    </div>
+
+    <div class="input-group">
+      <label for="post_body">Body</label><br>
+      <textarea class="input" placeholder="Body markdown..." id="post_body" name="post_markdown" rows="20">{{post.post_markdown}}</textarea>
     </div>
 
   </div>
 
-  {{#post.post_body}}
-  <div class="card">
-    <h2>{{post.post_title}}</h2>
-    {{{post.post_body}}}
-  </div>
-  {{/post.post_body}}
-
 </form>
+
+<link rel="stylesheet" href="/lib/simplemde/simplemde.min.css">
+<script src="/lib/simplemde/simplemde.min.js"></script>
+<script>
+  new SimpleMDE({ 
+    element: document.getElementById("post_intro"),
+    autosave: {
+      enabled : true
+    },
+    renderingConfig: {
+      codeSyntaxHighlighting: true
+    },
+    status : false
+  });
+  new SimpleMDE({ 
+    element: document.getElementById("post_body"),
+    autosave: {
+      enabled : true
+    },
+    renderingConfig: {
+      codeSyntaxHighlighting: true
+    },
+    status : false
+  });
+</script>

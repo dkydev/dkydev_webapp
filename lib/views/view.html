@@ -1,0 +1,23 @@
+<div class="card">
+  <div class="post-date">{{post.post_date}}</div>
+  <h2>{{post.post_title}}</h2>
+  {{&post.post_body}}
+</div>
+
+<a name="disqus_thread"></a>
+<div id="disqus_thread"></div>
+
+<script>
+var disqus_config = function () {
+  this.page.url = "http://www.dkydev.com/post/view/{{{post.post_id}}}";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = {{{post.post_id}}};
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = 'https://dkydev.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>

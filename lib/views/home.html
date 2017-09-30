@@ -1,10 +1,13 @@
 {{#posts}}
   <div class="card">
     <div class="post-date">{{post_date}}</div>
-    <h2>{{post_title}}</h2>
-    {{&post_body}}
+    <h2><a href="http://www.dkydev.com/post/view/{{post_id}}">{{post_title}}</a></h2>
+    {{&post_intro}}
+    <a href="http://www.dkydev.com/post/view/{{post_id}}#disqus_thread"></a>
   </div>
 {{/posts}}
 {{#hasNext}}
   <a class="next-link" href="/{{#label}}label/{{label}}/{{/label}}p/{{page}}">Next Page</a>
 {{/hasNext}}
+
+<script id="dsq-count-scr" src="//dkydev.disqus.com/count.js" async></script>

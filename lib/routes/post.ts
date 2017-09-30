@@ -7,6 +7,8 @@ import * as DKYSession from "../session";
 
 export function post(req: Request, res: Response): Promise<any> {
     switch (req.params.action) {
+        case "view":
+            return view(req, res);
         case "edit":
             return edit(req, res);
         case "save":
@@ -90,4 +92,24 @@ function list(req: Request, res: Response): Promise<any> {
             })
         });
     });
+}
+
+export function view(req: Request, res: Response): Promise<any> {
+    if (!req.params.id) {
+        // No ID specified - redirect to home.
+        res.redirect("/");
+    } else {
+        // Edit an existing post.
+        return modelPost.getPost(req.params.id).then((post: Post) => {
+            if (typeof post === "undefined") {
+                DKYSession.raiseMessage(req.session, "danger", "Post not found.");
+                res.redirect("/");
+            }
+            return sendHTML(req, res, {
+                template: "view.html",
+                title: `dkydev.com - ${post.post_title}`,
+                post: post
+            });
+        });
+    }
 }

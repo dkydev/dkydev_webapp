@@ -32,6 +32,9 @@ export default function (): Router {
     router.post("/logout", authenticate, (req: Request, res: Response, next: any) => {
         defaultRoutes.logout(req, res).catch(next);
     });
+    router.all("/post/view/:id?", (req: Request, res: Response, next: any) => {
+        postRoutes.view(req, res).catch(next);
+    });
     router.all("/post/:action?/:id?", authenticate, (req: Request, res: Response, next: any) => {
         postRoutes.post(req, res).catch(next);
     });

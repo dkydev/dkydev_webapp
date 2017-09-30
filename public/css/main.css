@@ -176,3 +176,7 @@ a.next-link {
 .social {
     margin-top:10px;
 }
+
+#disqus_thread {
+    padding:15px;
+}
