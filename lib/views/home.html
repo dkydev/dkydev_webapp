@@ -2,6 +2,9 @@
   <div class="card">
     <div class="post-date">{{post_date}}</div>
     <h2><a href="http://www.dkydev.com/post/view/{{post_id}}">{{post_title}}</a></h2>
+    {{#post_image}}
+    <a href="http://www.dkydev.com/post/view/{{post_id}}"><img src="{{post_image}}" /></a>
+    {{/post_image}}
     {{&post_intro}}
     <a href="http://www.dkydev.com/post/view/{{post_id}}#disqus_thread"></a>
   </div>

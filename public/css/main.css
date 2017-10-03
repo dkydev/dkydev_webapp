@@ -111,6 +111,10 @@ a {
     overflow: visible;
 }
 
+.card img {
+    max-width:100%;
+}
+
 label {
     font-weight:bold;
 }
