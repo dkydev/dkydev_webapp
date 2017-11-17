@@ -6,6 +6,7 @@ import config from "../var/config";
 import router from "./router";
 import error from "./error";
 import {DKYSessionHandler} from "./session";
+import * as session from "express-session";
 import {logger, errorLogger} from "./logger";
 
 var app: express.Application = express();
@@ -14,7 +15,15 @@ app.use(logger());
 
 app.use(helmet());
 
-app.use(DKYSessionHandler());
+//app.use(DKYSessionHandler());
+
+app.use(session({
+    name : 'app.sid',
+    secret: "1234567890QWERTY",
+    resave: true,
+    store: new session.MemoryStore(),
+    saveUninitialized: true
+}));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 

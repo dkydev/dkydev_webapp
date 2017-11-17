@@ -16,18 +16,20 @@ pool.on("error", (error, client) => {
     return error;
 });
 
-export function getClient(): Promise<Client> {
+export async function getClient(): Promise<Client> {
+
     var client: Client;
-    return pool.connect().then((newClient: Client) => {
-        client = newClient;
-        return new Promise<Client>((resolve: (client: Client) => void, reject) => {
-            resolve(client);
-            client.release();
-        });
-    }).catch((error: any): any => {
+    try {
+        client = await pool.connect();
+    } catch (error) {
         if (client)
             client.release();
         throw error;
+    }
+
+    return new Promise<Client>((resolve: (client: Client) => void, reject) => {
+        resolve(client);
+        client.release();
     });
 }
 

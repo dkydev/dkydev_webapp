@@ -1,5 +1,5 @@
 import * as bcrypt from "bcrypt-nodejs";
-import { QueryResult, Client, getClient } from "../db";
+import {QueryResult, Client, getClient} from "../db";
 
 export class User {
     public user_id: number;
@@ -7,44 +7,41 @@ export class User {
     public password: string;
 }
 
-export function login(email: string, password: string): Promise<any> {
-    var user: User;
-    return getUserbyEmail(email).then((newUser: User) => {
-        if (!newUser) throw new Error("User not found.");
-        user = newUser;
-        return validatePassword(password, user.password);
-    }).then((result: boolean) => {
-        if (result) {
-            return user;
-        } else {
-            throw new Error("Bad password.");
-        }
-    });
+export async function login(email: string, password: string): Promise<User> {
+    var user: User = await getUserByEmail(email);
+    if (!user) throw new Error("User not found.");
+
+    var isValid: boolean = await validatePassword(password, user.password);
+
+    if (isValid) {
+        return user;
+    } else {
+        throw new Error("Bad password.");
+    }
 }
 
-export function validatePassword(password: string, encrypted: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+export async function validatePassword(password: string, encrypted: string): Promise<boolean> {
+    return await new Promise<boolean>((resolve, reject) => {
         bcrypt.compare(password, encrypted, (err: Error, result: boolean) => {
             if (err) {
-                reject(err);
+                resolve(false);
             }
             resolve(result);
         });
     });
 }
 
-export function getUserbyEmail(email: string): Promise<User> {
-    return getClient().then((client: Client) => {
-        return client.query(`
+export async function getUserByEmail(email: string): Promise<User> {
+    var client: Client = await getClient();
+    var resultSet: QueryResult = await client.query(`
             SELECT *
             FROM "user" 
             WHERE email = $1
         `, [email]);
-    }).then((resultSet: QueryResult) => {
-        if (resultSet.rows.length == 0) {
-            return null;
-        } else {
-            return resultSet.rows.pop();
-        }
-    });
+
+    if (resultSet.rows.length == 0) {
+        throw new Error("User not found.");
+    } else {
+        return resultSet.rows.pop();
+    }
 }

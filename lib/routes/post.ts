@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import {Request, Response} from "express";
 import * as moment from "moment";
 import sendHTML from "../renderer";
 import * as modelPost from "../models/post";
-import { Post } from "../models/post";
+import {Post} from "../models/post";
 import * as DKYSession from "../session";
 
 export function post(req: Request, res: Response): Promise<any> {
@@ -20,7 +20,7 @@ export function post(req: Request, res: Response): Promise<any> {
     }
 }
 
-function save(req: Request, res: Response): Promise<any> {
+async function save(req: Request, res: Response): Promise<void> {
     // Validate.
     if (!Post.isValid(req.body)) {
         if (req.body.post_id) {
@@ -32,84 +32,89 @@ function save(req: Request, res: Response): Promise<any> {
     // Split labels.
     req.body.post_labels = req.body.post_labels ? req.body.post_labels.split(",") : [];
     var post: Post = new Post(req.body);
-    // Insert
-    return modelPost.savePost(post).then(() => {
-        DKYSession.raiseMessage(req.session, "success", "Post saved successfully.");
-        // Redirect back to list.
-        res.redirect("/post");
-    });
+
+    // Insert post.
+    await modelPost.savePost(post);
+
+    DKYSession.raiseMessage(req.session, "success", "Post saved successfully.");
+    // Redirect back to list.
+    res.redirect("/post");
 }
 
-function remove(req: Request, res: Response): Promise<any> {
+async function remove(req: Request, res: Response): Promise<void> {
     if (!req.params.id) {
         DKYSession.raiseMessage(req.session, "danger", "Post not found.");
         // Redirect back to list.
         res.redirect("/post");
         return;
     }
-    return modelPost.removePost(req.params.id).then(() => {
-        DKYSession.raiseMessage(req.session, "success", "Post deleted successfully.");
-        // Redirect back to list.
-        res.redirect("/post");
-    });
+
+    // Remove post.
+    await modelPost.removePost(req.params.id);
+
+    DKYSession.raiseMessage(req.session, "success", "Post deleted successfully.");
+    // Redirect back to list.
+    res.redirect("/post");
 }
 
-function edit(req: Request, res: Response): Promise<any> {
+async function edit(req: Request, res: Response): Promise<void> {
     if (!req.params.id) {
         // Create a new post.
-        return sendHTML(req, res, {
+        await sendHTML(req, res, {
             template: "edit.html",
             title: "dkydev.com add",
             page_title: "New Post",
-            post: { post_date: moment().format("MMM DD, YYYY") },
+            post: {post_date: moment().format("MMM DD, YYYY")},
             enabled: true
         });
     } else {
         // Edit an existing post.
-        return modelPost.getPost(req.params.id).then((post: Post) => {
-            if (typeof post === "undefined") {
-                DKYSession.raiseMessage(req.session, "danger", "Post not found.");
-                res.redirect("/post");
-            }
-            return sendHTML(req, res, {
-                template: "edit.html",
-                title: "dkydev.com edit",
-                page_title: "Edit Post",
-                post: post,
-                enabled: post.post_status == "Enabled"
-            });
+        var post: Post = await modelPost.getPost(req.params.id);
+
+        if (typeof post === "undefined") {
+            DKYSession.raiseMessage(req.session, "danger", "Post not found.");
+            res.redirect("/post");
+        }
+        await sendHTML(req, res, {
+            template: "edit.html",
+            title: "dkydev.com edit",
+            page_title: "Edit Post",
+            post: post,
+            enabled: post.post_status == "Enabled"
         });
     }
 }
 
-function list(req: Request, res: Response): Promise<any> {
-    return modelPost.getAllPosts().then((posts: Array<Post>) => {
-        return sendHTML(req, res, {
-            template: "list.html",
-            title: "dkydev.com list",
-            posts: posts.map((post) => {
-                return post;
-            })
-        });
+async function list(req: Request, res: Response): Promise<void> {
+    var posts: Array<Post> = await modelPost.getAllPosts();
+    await sendHTML(req, res, {
+        template: "list.html",
+        title: "dkydev.com list",
+        posts: posts.map((post) => {
+            return post;
+        })
     });
 }
 
-export function view(req: Request, res: Response): Promise<any> {
-    if (!req.params.id) {
-        // No ID specified - redirect to home.
+export async function view(req: Request, res: Response): Promise<void> {
+    var post: Post = null;
+
+    try {
+        if (req.params.id) {
+            post = await modelPost.getPost(req.params.id);
+        }
+        if (req.params.alias) {
+            post = await modelPost.getPostByAlias(req.params.alias);
+        }
+    } catch (error) {
+        DKYSession.raiseMessage(req.session, "danger", "Post not found.");
         res.redirect("/");
-    } else {
-        // Edit an existing post.
-        return modelPost.getPost(req.params.id).then((post: Post) => {
-            if (typeof post === "undefined") {
-                DKYSession.raiseMessage(req.session, "danger", "Post not found.");
-                res.redirect("/");
-            }
-            return sendHTML(req, res, {
-                template: "view.html",
-                title: `dkydev.com - ${post.post_title}`,
-                post: post
-            });
-        });
+        return;
     }
+
+    await sendHTML(req, res, {
+        template: "view.html",
+        title: `dkydev.com - ${post.post_title}`,
+        post: post
+    });
 }

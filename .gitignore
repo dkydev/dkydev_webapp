@@ -1,8 +1,11 @@
 deploy.sh
 var/config/index.ts
+var/config/index_development.ts
 var/config/index_production.ts
 var/config/*.js
 var/config/*.js.map
 lib/**/*.js
 lib/**/*.js.map
 node_modules
+.idea/
+log/app_log.txt

@@ -2,7 +2,7 @@
   <div class="post-date">{{post.post_date}}</div>
   <h2>{{post.post_title}}</h2>
   {{#post.post_image}}
-    <a href="http://www.dkydev.com/post/view/{{post.post_id}}"><img src="{{post.post_image}}" /></a>
+    <a href="http://www.dkydev.com/{{post_alias}}.html"><img src="{{post.post_image}}" /></a>
   {{/post.post_image}}
   {{&post.post_body}}
 </div>
@@ -12,7 +12,7 @@
 
 <script>
 var disqus_config = function () {
-  this.page.url = "http://www.dkydev.com/post/view/{{{post.post_id}}}";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.url = "http://www.dkydev.com/{{{post.post_alias}}}.html";
   this.page.identifier = {{{post.post_id}}};
 };
 
