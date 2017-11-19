@@ -1,16 +1,19 @@
 {{#posts}}
   <div class="card">
     <div class="post-date">{{post_date}}</div>
-    <h2><a href="http://www.dkydev.com/{{post_alias}}.html">{{post_title}}</a></h2>
+    <h2><a href="http://www.dkydev.com/{{post_alias}}/">{{post_title}}</a></h2>
     {{#post_image}}
-    <a href="http://www.dkydev.com/{{post_alias}}.html"><img src="{{post_image}}" /></a>
+    <a href="http://www.dkydev.com/{{post_alias}}/"><img src="{{post_image}}" /></a>
     {{/post_image}}
     {{&post_intro}}
-    <a href="http://www.dkydev.com/{{post_alias}}.html#disqus_thread"></a>
+    <a href="http://www.dkydev.com/{{post_alias}}/#disqus_thread"></a>
   </div>
 {{/posts}}
 {{#hasNext}}
-  <a class="next-link" href="/{{#label}}label/{{label}}/{{/label}}p/{{page}}">Next Page</a>
+  <a class="next-link" href="/{{#label}}label/{{label}}/{{/label}}p/{{page}}">More</a>
 {{/hasNext}}
+{{^posts}}
+<h1>There's nothing here... yet.</h1>
+{{/posts}}
 
 <script id="dsq-count-scr" src="//dkydev.disqus.com/count.js" async></script>

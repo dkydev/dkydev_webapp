@@ -9,7 +9,7 @@ import * as validator from "validator";
 export async function index(req: Request, res: Response): Promise<void> {
     // Limit page input to 1-999.
     var page: number = isNaN(req.params.p) ? 1 : Math.min(999, Math.max(1, req.params.p));
-    var label: string = req.params.label ? req.params.label : "gamedev";
+    var label: string = req.params.label;
 
     var results = await Promise.all([
         getBlogPosts(label, page),
@@ -18,7 +18,7 @@ export async function index(req: Request, res: Response): Promise<void> {
 
     await sendHTML(req, res, {
         template: "home.html",
-        title: "dkydev.com home",
+        title: "dkydev - Code | Art | Games",
         posts: results[0],
         hasNext: results[1] > page,
         page: results[1],
@@ -29,7 +29,7 @@ export async function index(req: Request, res: Response): Promise<void> {
 export async function getLogout(req: Request, res: Response): Promise<void> {
     await sendHTML(req, res, {
         template: "logout.html",
-        title: "logout - dkydev",
+        title: "Logout",
     });
 }
 
@@ -50,7 +50,7 @@ export async function logout(req: Request, res: Response): Promise<void> {
 export async function getLogin(req: Request, res: Response): Promise<void> {
     await sendHTML(req, res, {
         template: "login.html",
-        title: "login - dkydev",
+        title: "Login",
         email: req.body.email ? req.body.email : null
     });
 }
@@ -79,7 +79,7 @@ export async function login(req: Request, res: Response): Promise<void> {
 export async function error404(req: Request, res: Response): Promise<void> {
     await sendHTML(req, res, {
         template: "404.html",
-        title: "404 - dkydev"
+        title: "404 - Page Not Found"
     });
 }
 
@@ -88,6 +88,6 @@ export async function error500(err: Error, req: Request, res: Response): Promise
     await sendHTML(req, res, {
         status: 500,
         template: "500.html",
-        title: "500 - dkydev"
+        title: "500 - Error"
     });
 }

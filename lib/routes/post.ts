@@ -32,7 +32,10 @@ async function save(req: Request, res: Response): Promise<void> {
     // Split labels.
     req.body.post_labels = req.body.post_labels ? req.body.post_labels.split(",") : [];
     var post: Post = new Post(req.body);
-
+    post.post_options = {
+        show_date: req.body.post_show_date,
+        show_comments: req.body.post_show_comments
+    };
     // Insert post.
     await modelPost.savePost(post);
 
@@ -65,7 +68,9 @@ async function edit(req: Request, res: Response): Promise<void> {
             title: "dkydev.com add",
             page_title: "New Post",
             post: {post_date: moment().format("MMM DD, YYYY")},
-            enabled: true
+            enabled: true,
+            show_comments: true,
+            show_date: true
         });
     } else {
         // Edit an existing post.
@@ -80,7 +85,9 @@ async function edit(req: Request, res: Response): Promise<void> {
             title: "dkydev.com edit",
             page_title: "Edit Post",
             post: post,
-            enabled: post.post_status == "Enabled"
+            enabled: post.post_status == "Enabled",
+            show_comments: post.post_options.show_comments == "Show",
+            show_date: post.post_options.show_date == "Show"
         });
     }
 }
@@ -89,7 +96,7 @@ async function list(req: Request, res: Response): Promise<void> {
     var posts: Array<Post> = await modelPost.getAllPosts();
     await sendHTML(req, res, {
         template: "list.html",
-        title: "dkydev.com list",
+        title: "List Posts",
         posts: posts.map((post) => {
             return post;
         })
@@ -114,7 +121,9 @@ export async function view(req: Request, res: Response): Promise<void> {
 
     await sendHTML(req, res, {
         template: "view.html",
-        title: `dkydev.com - ${post.post_title}`,
-        post: post
+        title: `${post.post_title}`,
+        post: post,
+        show_comments: post.post_options.show_comments == "Show",
+        show_date: post.post_options.show_date == "Show"
     });
 }

@@ -6,7 +6,6 @@ export class Post {
 
     public post_id: number;
     public post_title: string;
-    public post_ts: number;
     public post_date: string;
     public post_body: string;
     public post_markdown: string;
@@ -16,11 +15,11 @@ export class Post {
     public post_status: string;
     public post_labels: string[];
     public post_alias: string;
+    public post_options: any;
 
     constructor(obj: any) {
         this.post_id = obj.post_id;
         this.post_title = obj.post_title;
-        this.post_ts = obj.post_ts;
         this.post_date = obj.post_date;
         this.post_body = obj.post_body;
         this.post_markdown = obj.post_markdown;
@@ -30,6 +29,7 @@ export class Post {
         this.post_status = obj.post_status;
         this.post_labels = obj.post_labels ? obj.post_labels : [];
         this.post_alias = obj.post_alias;
+        this.post_options = obj.post_options ? obj.post_options : {};
     }
 
     public static isValid(obj: any): boolean {
@@ -81,7 +81,7 @@ function renderMarkdown(markdown: string): string {
 }
 
 export async function savePost(post: Post): Promise<void> {
-    post.post_ts = moment(post.post_date, "MMM DD, YYYY").unix();
+    var timestamp: number = moment(post.post_date, "MMM DD, YYYY").unix();
     post.post_intro = renderMarkdown(post.post_intro_markdown);
     post.post_body = renderMarkdown(post.post_markdown);
     var client: Client = await getClient();
@@ -98,20 +98,21 @@ export async function savePost(post: Post): Promise<void> {
                 post_intro = $6,
                 post_intro_markdown = $7,
                 post_image = $8,
-                post_alias = $9
+                post_alias = $9,
+                post_options = $10
             WHERE
-                post.post_id = $10;
-        `, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body, post.post_intro, post.post_intro_markdown, post.post_image, post.post_alias, post.post_id]);
+                post.post_id = $11;
+        `, [post.post_title, timestamp, post.post_markdown, post.post_status, post.post_body, post.post_intro, post.post_intro_markdown, post.post_image, post.post_alias, JSON.stringify(post.post_options), post.post_id]);
 
         // Delete labels.
         await client.query(`DELETE FROM post_label WHERE post_label.post_id = $1;`, [post.post_id]);
     } else {
         // Insert new post.
         var resultSet: QueryResult = await client.query(`
-            INSERT INTO post(post_title, post_date, post_markdown, post_status, post_body, post_intro, post_intro_markdown, post_image) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
+            INSERT INTO post(post_title, post_date, post_markdown, post_status, post_body, post_intro, post_intro_markdown, post_image, post_alias, post_options) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
             RETURNING post_id
-            `, [post.post_title, post.post_ts, post.post_markdown, post.post_status, post.post_body, post.post_intro, post.post_intro_markdown, post.post_image, post.post_alias]);
+            `, [post.post_title, timestamp, post.post_markdown, post.post_status, post.post_body, post.post_intro, post.post_intro_markdown, post.post_image, post.post_alias, JSON.stringify(post.post_options)]);
 
         // Set the post ID for label insert.
         post.post_id = resultSet.rows[0].post_id;
@@ -145,7 +146,7 @@ export async function getBlogPosts(label: string = null, page: number = 1): Prom
     }
 
     return resultSet.rows.map<Post>((obj: any) => {
-        obj.post_date = moment.unix(obj.post_date).format("MMM D, YYYY");
+        obj.post_date = moment.unix(obj.post_date).format("MMM DD, YYYY");
         return new Post(obj);
     });
 }
@@ -187,7 +188,7 @@ export async function getAllPosts(): Promise<Array<Post>> {
         `);
 
     return resultSet.rows.map<Post>((obj: any) => {
-        obj.post_date = moment.unix(obj.post_date).format("MMM D, YYYY");
+        obj.post_date = moment.unix(obj.post_date).format("MMM DD, YYYY");
         return new Post(obj);
     });
 }
@@ -203,12 +204,11 @@ export async function getPost(post_id: number): Promise<Post> {
         `, [post_id]);
 
     if (resultSet.rows.length == 0) {
-        throw new Error("Post not found.");
+        throw new Error(`Post #${post_id} not found.`);
     }
 
     var obj: any = resultSet.rows.pop();
-    obj.post_date = moment.unix(obj.post_date).format("MMM D, YYYY");
-
+    obj.post_date = moment.unix(obj.post_date).format("MMM DD, YYYY");
     return new Post(obj);
 }
 
@@ -223,11 +223,10 @@ export async function getPostByAlias(post_alias: string): Promise<Post> {
         `, [post_alias]);
 
     if (resultSet.rows.length == 0) {
-        throw new Error("Post not found.");
+        throw new Error(`Post ${post_alias} not found.`);
     }
 
     var obj: any = resultSet.rows.pop();
-    obj.post_date = moment.unix(obj.post_date).format("MMM D, YYYY");
-
+    obj.post_date = moment.unix(obj.post_date).format("MMM DD, YYYY");
     return new Post(obj);
 }

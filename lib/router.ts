@@ -38,7 +38,7 @@ export default function (): Router {
     router.all("/post/:action?/:id?", authenticate, (req: Request, res: Response, next: any) => {
         postRoutes.post(req, res).catch(next);
     });
-    router.all("/:alias.html", (req: Request, res: Response, next: any) => {
+    router.all("/:alias", (req: Request, res: Response, next: any) => {
         postRoutes.view(req, res).catch(next);
     });
     // Catch all.

@@ -13,10 +13,26 @@
     {{#post.post_id}} <input type="hidden" name="post_id" value="{{post.post_id}}" /> {{/post.post_id}}
 
     <div class="input-group">
-      <label for="post_enabled">Status</label><br>
+      <label for="post_status">Status</label><br>
       <select class="input" id="post_status" name="post_status">
         <option {{#enabled}}selected{{/enabled}}>Enabled</option>
         <option {{^enabled}}selected{{/enabled}}>Disabled</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label for="post_show_date">Show Date</label><br>
+      <select class="input" id="post_show_date" name="post_show_date">
+        <option {{#show_date}}selected{{/show_date}}>Show</option>
+        <option {{^show_date}}selected{{/show_date}}>Hide</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label for="post_show_comments">Show Comments</label><br>
+      <select class="input" id="post_show_comments" name="post_show_comments">
+        <option {{#show_comments}}selected{{/show_comments}}>Show</option>
+        <option {{^show_comments}}selected{{/show_comments}}>Hide</option>
       </select>
     </div>
 

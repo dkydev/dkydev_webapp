@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node lib/app.js --harmony",
+    "debug": "node --debug lib/app.js --harmony",
     "build": "tsc -p .",
     "watch": "onchange \"**/*.ts\" -i -- npm run build"
   },

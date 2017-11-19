@@ -12,9 +12,15 @@
     <title>
         {{title}}
     </title>
-    <meta name="description" content="A simple blog cataloguing my personal endeavors into code, art, and other things.">
+    <meta name="description" content="Code, Art and Games.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5f0ac3">
+    <meta name="theme-color" content="#5f0ac3">
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/normalize.css">
@@ -31,19 +37,30 @@
     <![endif]-->
 
     <div class="header">
-        <a href="/" class="title"><img height="45" src="/img/duck.svg"><span style="padding-left: 3px;">dkydev</span></a>
-        <div class="text-center font-small">
-            <a href="mailto:nick@dkydev.com">nick@dkydev.com</a> | &copy; dkydev {{year}}
-            <div class="social">
-                <a href="https://github.com/dkydev"><img width="32" height="32" src="/img/github.svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://twitter.com/dkydev_com"><img width="35" height="35" style="margin-bottom: -1px;" src="/img/twitter.svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://www.instagram.com/dkydev_com"><img width="32" height="32" src="/img/instagram.svg"></a>
+        <a href="/" class="title"><img src="/img/logo.svg"></a>
+
+        <div class="container">
+            <div class="menu">
+                <a href="http://www.dkydev.com/about/">About</a>
+                <a href="http://www.dkydev.com/label/games/">Games</a>
+                <a href="http://www.dkydev.com/label/code/">Code</a>
+                <a href="http://www.dkydev.com/label/art/">Art</a>
             </div>
         </div>
+
     </div>
     <div class="container">
-        {{#message}}
-        <div class="alert alert-{{message.type}}">{{message.text}}</div>{{/message}} {{> body}}
+        {{#message}}<div class="alert alert-{{message.type}}">{{message.text}}</div>{{/message}}
+        {{> body}}
+    </div>
+
+    <div class="footer text-center font-small">
+        <a href="mailto:nick@dkydev.com">nick@dkydev.com</a> | © dkydev {{year}}
+        <div class="social">
+            <a href="https://github.com/dkydev"><img src="/img/github-dark.svg" width="64" height="64"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="https://twitter.com/dkydev_com"><img style="margin-bottom: -4px;" src="/img/twitter-dark.svg" width="70" height="70"></a>
+        </div>
+        <a href="/" class="title"><img src="/img/logo-dark.svg"></a>
     </div>
 
     <script src="/lib/highlightjs/highlight.pack.js"></script>
