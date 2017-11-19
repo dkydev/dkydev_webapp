@@ -18,7 +18,7 @@ export async function index(req: Request, res: Response): Promise<void> {
 
     await sendHTML(req, res, {
         template: "home.html",
-        title: "dkydev - Code | Art | Games",
+        title: "DKYDEV | Games | Code | Art",
         posts: results[0],
         hasNext: results[1] > page,
         page: results[1],
