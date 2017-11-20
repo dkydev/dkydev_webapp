@@ -104,6 +104,10 @@ small, .font-small {
     max-width: 800px;
 }
 
+.body-container {
+    padding:0px 20px;
+}
+
 .header {
     margin-top: 0px;
     width:100%;
