@@ -25,6 +25,9 @@ h3 {font-size: 2em;}
 
 h4 {font-size: 1.5em;}
 
+.card > h2 {
+    margin-bottom:0px;
+}
 
 small, .font-small {
     font-size: 0.8em;
@@ -136,7 +139,9 @@ a {
 }
 
 .card img {
-    max-width:100%;
+    max-width: 100%;
+    margin: 35px auto 25px;
+    display: block;
 }
 
 label {
