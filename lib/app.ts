@@ -57,9 +57,7 @@ var lex = le.create({
         cb(null, { options: opts, certs: certs });
     },
 
-    app: app,
-
-    debug: true
+    app: app
     
 });
 
