@@ -1,12 +1,12 @@
 {{#posts}}
   <div class="card">
 
-    <h2><a href="http://www.dkydev.com/{{post_alias}}/">{{post_title}}</a></h2>
+    <h2><a href="{{host}}/{{post_alias}}/">{{post_title}}</a></h2>
     <div>
-      <span class="post-date">{{post_date}}</span> <a href="http://www.dkydev.com/{{post_alias}}/#disqus_thread" data-disqus-identifier="{{post_id}}"></a>
+      <span class="post-date">{{post_date}}</span> <a href="{{host}}/{{post_alias}}/#disqus_thread" data-disqus-identifier="{{post_id}}"></a>
     </div>
     {{#post_image}}
-      <a href="http://www.dkydev.com/{{post_alias}}/"><img src="{{post_image}}" /></a>
+      <a href="{{host}}/{{post_alias}}/"><img src="{{post_image}}" /></a>
     {{/post_image}}
     {{#post_intro}}
       {{&post_intro}}

@@ -1,5 +1,5 @@
 export default class config {
-  public static HOST: string = "localhost";
+  public static HOST: string = "http://localhost";
   public static PORT: number = 80;
   public static DATABASE_HOST: string = "";
   public static DATABASE_PORT: number = 5432;

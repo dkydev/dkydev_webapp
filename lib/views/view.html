@@ -3,7 +3,7 @@
 {{/show_date}}
 <h1>{{post.post_title}}</h1>
 {{#post.post_image}}
-  <a href="http://www.dkydev.com/{{post.post_alias}}/"><img src="{{post.post_image}}" /></a>
+  <a href="{{host}}/{{post.post_alias}}/"><img src="{{post.post_image}}" /></a>
 {{/post.post_image}}
 {{&post.post_body}}
 
@@ -13,7 +13,7 @@
 
 <script>
 var disqus_config = function () {
-  this.page.url = "http://www.dkydev.com/{{{post.post_alias}}}/";
+  this.page.url = "{{host}}/{{{post.post_alias}}}/";
   this.page.identifier = {{{post.post_id}}};
 };
 

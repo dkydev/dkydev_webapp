@@ -3,12 +3,14 @@ import * as mustache from "mustache";
 import {Request, Response, RequestHandler} from "express";
 import * as DKYSession from "./session";
 import * as moment from 'moment';
+import config from "../var/config";
 
 export default async function sendHTML(req: Request, res: Response, data: any): Promise<void> {
     data.status = data.status || 200;
     data.title = data.title || "dkydev";
     data.year = moment().year();
     data.message = DKYSession.getMessage(req.session);
+    data.host = config.HOST;
 
     var html: string = await renderLayout(data.template, data);
     res.status(data.status).send(html);
